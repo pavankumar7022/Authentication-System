@@ -134,6 +134,9 @@ app.get('/profile', authenticateToken, async (req, res) => {
   res.json(user);
 });
 
+app.get('/',(req,res)=>{
+  res.send('API is Running')
+})
 //  SERVER 
 app.listen(PORT, () => {
   console.log(` Server running at http://localhost:${PORT}`);
