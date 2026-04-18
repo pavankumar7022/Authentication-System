@@ -2,18 +2,19 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 
 const userSchema = new mongoose.Schema({
-  username: String,
+  username: { type: String, unique: true },
   password: String
 });
 
-// hash password before save
-userSchema.pre('save', async function(next) {
+// FIXED middleware 
+userSchema.pre('save', async function () {
+  if (!this.isModified('password')) return;
+
   this.password = await bcrypt.hash(this.password, 10);
-  next();
 });
 
 // compare password
-userSchema.methods.comparePassword = function(password) {
+userSchema.methods.comparePassword = function (password) {
   return bcrypt.compare(password, this.password);
 };
 
